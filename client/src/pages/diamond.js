@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const DiamondPattern = () => {
   const [str, setStr] = useState("FORMULAQSOLUTIONS");
@@ -6,7 +6,7 @@ const DiamondPattern = () => {
   const [showPattern, setShowPattern] = useState(false);
 
   const handleClick = () => {
-    if (!isNaN(n) && n>0 && n < 100) {
+    if (!isNaN(n) && n > 0 && n < 100) {
       setShowPattern(true);
     } else {
       setN(null);
@@ -16,42 +16,70 @@ const DiamondPattern = () => {
 
   const generateDiamond = () => {
     let output = "";
-    let ch = 0;
+    let ch = 1,
+      m = 0,
+      l = 1,
+      mm = 2;
+    const s = "FORMULAQSOLUTIONS";
     const mid = Math.floor(n / 2);
+    var sen = "";
 
-    for (let i = 1; i <= mid; i++) {
+    // the upper triangle formation is working till 25 number. Beyond that we are not getting the expected result.
+    for (let i = 1; i <= mid + 1; i++) {
       for (let k = mid - 1; k >= i - 1; k--) {
         output += " ";
       }
 
-      for (let j = 1; j <= i * 2 - 1; j++) {
-        output += str[ch % str.length];
-        ch += 1;
+      if (l > s.length) {
+        sen = str.slice(m, str.length) + str.slice(0, mm);
+        mm = mm + 3;
+        ch = ch + 3;
+      } else {
+        sen = str.slice(m, l);
       }
+      l = l + 3;
+      m++;
+
+      output += sen;
       output += "\n";
     }
-
+    console.log(sen);
+    //the lower traingle of the diamond is working perfectly fine as it depends upon the last word coming from the upper triangle.
     for (let i = 1; i <= mid + 1; i++) {
       for (let k = 0; k < i; k++) {
         output += " ";
       }
-      for (let j = 1; j <= (mid + 1 - i) * 2 - 1; j++) {
-        output += str[ch % str.length];
-        ch += 1;
-      }
+      output += sen.slice(1, -1);
+      sen = sen.slice(1, -1);
       output += "\n";
     }
-
     return output;
 
-    
-    
+    // second method which doesn't give the same output as required. But the diamond formation is working perfectly for any number.
+
+    // for (let i = 1; i <= mid + 1; i++) {
+    //   for (let k = mid - 1; k >= i - 1; k--) {
+    //     output += " ";
+    //   }
+    //   for (let j = 1; j <= i * 2 - 1; j++) {
+    //     output += str[ch % str.length];
+    //     ch += 1;
+    //   }
+    //   output += "\n";
+    // }
+
+    // for (let i = 1; i <= mid + 1; i++) {
+    //   for (let k = 0; k < i; k++) {
+    //     output += " ";
+    //   }
+    //   for (let j = 1; j <= (mid + 1 - i) * 2 - 1; j++) {
+    //     output += str[ch % str.length];
+    //     ch += 1;
+    //   }
+    //   output += "\n";
+    // }
+    // return output;
   };
-
-
-  
-
-
 
   return (
     <div className="container mx-auto  ml-[7rem] p-6 mt-[5rem]  bg-gray-200 rounded-md shadow-md">
